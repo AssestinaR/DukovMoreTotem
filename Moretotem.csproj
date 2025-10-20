@@ -1,0 +1,29 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <Nullable>enable</Nullable>
+    <!-- This should be the folder that contains Duckov.exe -->
+    <!-- 下面这行里填写你的鸭科夫安装路径，这样编译器就能找到相关的dll文件 -->
+    <DuckovPath>D:\SteamLibrary\steamapps\common\Escape from Duckov</DuckovPath>
+    <AssemblyName>MoreTotem</AssemblyName>
+    <RootNamespace>MoreTotem</RootNamespace>
+    <!-- 用户的 Mod 文件夹里的 Harmony 路径（按你的截图）。可按需修改为相对路径。 -->
+    <ModHarmonyPath>D:\SteamLibrary\steamapps\common\Escape from Duckov\Duckov_Data\Mods\MoreTotem\0Harmony.dll</ModHarmonyPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="Exists('$(DuckovPath)\Duckov_Data\Managed\0Harmony.dll') Or Exists('$(ModHarmonyPath)')">
+    <DefineConstants>$(DefineConstants);HARMONY_PRESENT</DefineConstants>
+  </PropertyGroup>
+  <ItemGroup>
+        <Reference Include="$(DuckovPath)\Duckov_Data\Managed\TeamSoda.*" />
+        <Reference Include="$(DuckovPath)\Duckov_Data\Managed\Unity*" />
+        <Reference Include="$(DuckovPath)\Duckov_Data\Managed\ItemStatsSystem.dll" />
+        <!-- Harmony from游戏 Managed 目录（如存在） -->
+        <Reference Include="$(DuckovPath)\Duckov_Data\Managed\0Harmony.dll" Condition="Exists('$(DuckovPath)\Duckov_Data\Managed\0Harmony.dll')">
+          <Private>false</Private>
+        </Reference>
+        <!-- Harmony 从 Mod 文件夹（你放置的位置） -->
+        <Reference Include="$(ModHarmonyPath)" Condition="Exists('$(ModHarmonyPath)')">
+          <Private>false</Private>
+        </Reference>
+  </ItemGroup>
+</Project>
