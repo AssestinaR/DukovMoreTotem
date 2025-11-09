@@ -1,3 +1,8 @@
+This is English language version of DukovMoreTotem. The version of MoreTotem is old as well the date of 2025 Oct 20
+
+Original instruction below:
+________________________________________________________________________________________
+
 # Duckov Modding 指南（基于 MoreTotem 实战）
 
 本仓库记录了在“逃离鸭科夫（Escape From Duckov）”缺少官方 API 情况下，如何高效完成一个功能型 MOD 的方法论与可复用代码位点。目标：后续新建 MOD 时，仅阅读本 README 即可快速确定切入点、规避坑点、减少盲试时间。
