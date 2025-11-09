@@ -1,4 +1,4 @@
-﻿using ItemStatsSystem; // for Item
+using ItemStatsSystem; // for Item
 using ItemStatsSystem.Items;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -123,7 +123,7 @@ namespace MoreTotem
 
         private static string HotkeyToString(List<KeyCode> keys)
         {
-            if (keys == null || keys.Count == 0) return "(未设置)";
+            if (keys == null || keys.Count == 0) return "(Not set)";
             return string.Join(" + ", keys.Select(k => k.ToString()).ToArray());
         }
 
@@ -283,12 +283,12 @@ namespace MoreTotem
                         _overrideWeaponCol = chosen;
                         _lastInspectedWeaponCol = chosen;
                         RefreshGemInfo();
-                        Debug.Log($"[MoreTotem] 目标：{GetTransformPath(chosen.transform)}，Gem={chosen.list?.Count(IsGemSlot) ?? 0}");
+                        Debug.Log($"[MoreTotem] Item：{GetTransformPath(chosen.transform)}，Gem={chosen.list?.Count(IsGemSlot) ?? 0}");
                         if (!string.IsNullOrEmpty(_lastStrictMatchInfo)) Debug.Log("[MoreTotem] StrictRoute " + _lastStrictMatchInfo);
                     }
                     else
                     {
-                        Debug.Log("[MoreTotem] 未找到可选择的目标（严格模式）。");
+                        Debug.Log("[MoreTotem] No selectable item found (Strict Mode).");
                     }
                 }
                 catch (Exception ex)
@@ -375,7 +375,7 @@ namespace MoreTotem
             _uiRect = GUILayout.Window(0x4D540001, _uiRect, id =>
             {
                 // Header
-                GUILayout.Label("MoreTotem - 图腾槽扩展");
+                GUILayout.Label("MoreTotem Classic (Totem slot expansion)");
                 var hint = new GUIStyle(GUI.skin.label) { wordWrap = true, fontSize = 12 };
                 hint.normal.textColor = new Color(1f, 1f, 1f, 0.75f);
 
@@ -404,7 +404,7 @@ namespace MoreTotem
                     }
                     catch (Exception ex) { Debug.LogError($"[MoreTotem] UI decrement error: {ex}"); }
                 }
-                GUILayout.Label($"Extra: {extra}  (Total: {BaseTotemSlots + extra}，上限 {MaxTotalTotemSlots})", GUILayout.Width(220));
+                GUILayout.Label($"Extra: {extra}  (Total: {BaseTotemSlots + extra}, Maximum {MaxTotalTotemSlots})", GUILayout.Width(220));
                 if (GUILayout.Button("+", GUILayout.Width(40)))
                 {
                     try
@@ -420,11 +420,11 @@ namespace MoreTotem
                     catch (Exception ex) { Debug.LogError($"[MoreTotem] UI increment error: {ex}"); }
                 }
                 GUILayout.EndHorizontal();
-                GUILayout.Label("提示：新增图腾槽可能需要滚动装备栏才能看到。", hint);
+                GUILayout.Label("Tip/Hint: You may need to scroll your equipment bar/inventory to see the newly added totem slot.", hint);
 
                 // Gem +/- row
                 GUILayout.Space(6f);
-                GUILayout.Label("宝石槽（当前目标）");
+                GUILayout.Label("Gem Slot (Current Target)");
                 GUILayout.BeginHorizontal();
                 GUI.enabled = _lastGemCount >= 0;
                 if (GUILayout.Button("-", GUILayout.Width(40)))
@@ -440,12 +440,12 @@ namespace MoreTotem
                 }
                 GUI.enabled = true;
                 GUILayout.EndHorizontal();
-                GUILayout.Label("说明：先打开物品详情，再按 F9 锁定；修改后重新选中该物品可刷新显示。", hint);
+                GUILayout.Label("Instructions: Click item and press F9. Re-select the item to refresh the display.", hint);
 
                 // Actions
                 GUILayout.Space(6f);
                 GUILayout.BeginHorizontal();
-                if (GUILayout.Button("立即检测（F9）", GUILayout.Width(140)))
+                if (GUILayout.Button("Detect (F9)", GUILayout.Width(140)))
                 {
                     try
                     {
@@ -453,13 +453,13 @@ namespace MoreTotem
                         if (chosen != null)
                         {
                             _overrideWeaponCol = chosen; _lastInspectedWeaponCol = chosen; RefreshGemInfo();
-                            Debug.Log($"[MoreTotem] 目标：{GetTransformPath(chosen.transform)}，Gem={chosen.list?.Count(IsGemSlot) ?? 0}");
+                            Debug.Log($"[MoreTotem] Item：{GetTransformPath(chosen.transform)}，Gem={chosen.list?.Count(IsGemSlot) ?? 0}");
                         }
-                        else { Debug.Log("[MoreTotem] 未找到可选择的目标。"); }
+                        else { Debug.Log("[MoreTotem] No selectable target found."); }
                     }
-                    catch (Exception ex) { Debug.LogWarning("[MoreTotem] 立即检测失败: " + ex.Message); }
+                    catch (Exception ex) { Debug.LogWarning("[MoreTotem] detection failed " + ex.Message); }
                 }
-                if (GUILayout.Button("清除目标", GUILayout.Width(100)))
+                if (GUILayout.Button("Clear", GUILayout.Width(100)))
                 {
                     _overrideWeaponCol = null; _lastGemCount = -1;
                 }
@@ -468,16 +468,16 @@ namespace MoreTotem
                 // Hotkey binding
                 GUILayout.Space(6f);
                 GUILayout.BeginHorizontal();
-                GUILayout.Label("打开窗口热键:", GUILayout.Width(110));
+                GUILayout.Label("Open Window Key:", GUILayout.Width(110));
                 GUILayout.Label(HotkeyToString(_toggleHotkey), GUILayout.Width(180));
                 if (!_bindingHotkey)
                 {
-                    if (GUILayout.Button("重新绑定", GUILayout.Width(90))) _bindingHotkey = true;
-                    if (GUILayout.Button("恢复默认", GUILayout.Width(90))) { _toggleHotkey = GetDefaultToggleHotkey(); SaveToggleHotkeyToPrefs(_toggleHotkey); }
+                    if (GUILayout.Button("Rebind", GUILayout.Width(90))) _bindingHotkey = true;
+                    if (GUILayout.Button("Restore", GUILayout.Width(90))) { _toggleHotkey = GetDefaultToggleHotkey(); SaveToggleHotkeyToPrefs(_toggleHotkey); }
                 }
                 else
                 {
-                    GUILayout.Label("按下键盘上的任意键", hint);
+                    GUILayout.Label("Press any key on the keyboard", hint);
                 }
                 GUILayout.EndHorizontal();
 
@@ -1593,7 +1593,7 @@ namespace MoreTotem
                         }
                     }
                 }
-                Debug.Log("[MoreTotem] 严格模式：未在 Duckov 详情面板实例中找到当前物品。");
+                Debug.Log("[MoreTotem] Strict Mode: The current item was not found in the Duckov details panel instance.");
             }
             catch { }
             return false;
